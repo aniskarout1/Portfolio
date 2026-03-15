@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import profileImage from "./assets/ar1.2.jpg";
 
 const WINDOWS = {
   about: {
@@ -56,7 +57,7 @@ function AboutWindow() {
   return (
     <div className="p-6 text-slate-300 h-full overflow-auto">
       <div className="flex items-center gap-5 mb-6">
-        <img src="ar1.2.jpg" alt="Aniska Rout" style={{
+        <img src={profileImage} alt="Aniska Rout" style={{
           width: 80, height: 80, borderRadius: "50%",
           objectFit: "cover", flexShrink: 0,
           border: "2px solid #0db9f2", boxShadow: "0 0 15px rgba(13,185,242,0.3)"
