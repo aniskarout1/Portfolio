@@ -14,6 +14,10 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.2.1",
-    "vite": "^5.1.4"
-  }
+    "gh-pages": "^6.3.0",
+    "vite": "^5.1.4",
+    "vite-plugin-singlefile": "^2.3.0"
+  },
+  "homepage": "https://aniskarout1.github.io/Portfolio/",
+  "deploy": "gh-pages -d dist"
 }
