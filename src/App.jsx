@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import profileImage from "./assets/ar1.2.jpg";
+import spotifyLogo from "./assets/spotify.png";
+import vscodeLogo from "./assets/vscode.png";
 
 const WINDOWS = {
   about: {
@@ -37,6 +39,21 @@ const WINDOWS = {
     color: "from-pink-500 to-rose-600",
     accent: "#ec4899",
   },
+  spotify: {
+    id: "spotify",
+    title: "Spotify",
+    icon: "SP",
+    color: "from-emerald-500 to-green-600",
+    accent: "#22c55e",
+  },
+  vscode: {
+    id: "vscode",
+    title: "VS Code",
+    icon: "VS",
+    color: "from-sky-500 to-blue-600",
+    accent: "#0ea5e9",
+  },
+
 };
 
 function Clock() {
@@ -227,6 +244,7 @@ function ResumeWindow() {
       }}
       onMouseLeave={e => {
         e.currentTarget.style.transform = "scale(1)";
+                  e.currentTarget.style.boxShadow = "none";
         e.currentTarget.style.boxShadow = "0 8px 24px rgba(13,185,242,0.3)";
       }}
       >
@@ -281,14 +299,89 @@ function ContactWindow() {
   );
 }
 
-const WINDOW_CONTENT = { about: AboutWindow, projects: ProjectsWindow, career: CareerWindow, resume: ResumeWindow, contact: ContactWindow };
+function SpotifyWindow() {
+  const [interacted, setInteracted] = useState(false);
+  const baseUrl = "https://open.spotify.com/embed/playlist/37i9dQZEVXbLZ52XmnySJg";
+  const src = `${baseUrl}?autoplay=1`;
+  return (
+    <div style={{ width: "100%", height: "100%", background: "#0b0b0b", position: "relative" }}>
+      <iframe
+        title="Spotify"
+        src={src}
+        style={{ width: "100%", height: "100%", border: "none" }}
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"
+      />
+      {!interacted && (
+        <button
+          onClick={() => setInteracted(true)}
+          style={{
+            position: "absolute", inset: 0,
+            background: "rgba(0,0,0,0.45)", color: "white",
+            border: "none", cursor: "pointer",
+            fontSize: 16, fontWeight: 600,
+            display: "flex", alignItems: "center", justifyContent: "center"
+          }}
+          title="Click to enable audio"
+        >
+          Click to enable audio
+        </button>
+      )}
+      <button
+        onClick={() => window.open("https://open.spotify.com", "_blank", "noopener,noreferrer")}
+        style={{
+          position: "absolute", top: 12, right: 12,
+          background: "rgba(255,255,255,0.12)", color: "white",
+          border: "1px solid rgba(255,255,255,0.25)", borderRadius: 8,
+          padding: "6px 10px", fontSize: 12, cursor: "pointer"
+        }}
+      >
+        Open in new tab
+      </button>
+    </div>
+  );
+}
+
+function VSCodeWindow() {
+  return (
+    <div style={{ width: "100%", height: "100%", background: "#0b0f1a", position: "relative" }}>
+      <iframe
+        title="VS Code"
+        src="https://github1s.com/aniskarout1/Portfolio"
+        style={{ width: "100%", height: "100%", border: "none" }}
+        loading="lazy"
+      />
+      <button
+        onClick={() => window.open("https://github1s.com/aniskarout1/Portfolio", "_blank", "noopener,noreferrer")}
+        style={{
+          position: "absolute", top: 12, right: 12,
+          background: "rgba(255,255,255,0.12)", color: "white",
+          border: "1px solid rgba(255,255,255,0.25)", borderRadius: 8,
+          padding: "6px 10px", fontSize: 12, cursor: "pointer"
+        }}
+      >
+        Open in new tab
+      </button>
+    </div>
+  );
+}
+
+const WINDOW_CONTENT = {
+  about: AboutWindow,
+  projects: ProjectsWindow,
+  career: CareerWindow,
+  resume: ResumeWindow,
+  contact: ContactWindow,
+  spotify: SpotifyWindow,
+  vscode: VSCodeWindow,
+};
 
 let zCounter = 100;
 const SIDEBAR_WIDTH = 80;
 const MENU_BAR_HEIGHT = 28;
 const DOCK_AREA_HEIGHT = 88;
 
-function AppWindow({ winId, win, onClose, onMinimize, onFocus }) {
+function AppWindow({ winId, win, onClose, onMinimize, onFocus, onMaximizeChange, sidebarWidth }) {
   const [pos, setPos] = useState({ x: 80 + Math.random() * 100, y: 60 + Math.random() * 60 });
   const [size, setSize] = useState({ w: 580, h: 420 });
   const [maximized, setMaximized] = useState(false);
@@ -320,14 +413,14 @@ function AppWindow({ winId, win, onClose, onMinimize, onFocus }) {
       onMouseDown={handleFocus}
       style={{
         position: "fixed",
-        left: maximized ? SIDEBAR_WIDTH : pos.x,
+        left: maximized ? sidebarWidth : pos.x,
         top: maximized ? MENU_BAR_HEIGHT : pos.y,
-        width: maximized ? `calc(100vw - ${SIDEBAR_WIDTH}px)` : size.w,
+        width: maximized ? `calc(100vw - ${sidebarWidth}px)` : size.w,
         height: maximized ? `calc(100vh - ${MENU_BAR_HEIGHT}px)` : size.h,
         zIndex: maximized ? 9999 : zIndex,
-        borderRadius: maximized ? 0 : 14,
+        borderRadius: maximized ? 0 : 10,
         overflow: "hidden",
-        boxShadow: "0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.07)",
+        boxShadow: "0 32px 80px rgba(0,0,0,0.7), 0 0 0 0.5px rgba(255,255,255,0.07)",
         background: "rgba(10, 22, 26, 0.92)",
         backdropFilter: "blur(20px)",
         display: "flex", flexDirection: "column",
@@ -339,14 +432,14 @@ function AppWindow({ winId, win, onClose, onMinimize, onFocus }) {
       <div onMouseDown={onMouseDown} style={{
         display: "flex", alignItems: "center", justifyContent: "space-between",
         padding: "10px 16px", cursor: maximized ? "default" : "move",
-        borderBottom: "1px solid rgba(255,255,255,0.07)",
+        borderBottom: "0.5px solid rgba(255,255,255,0.07)",
         background: "rgba(255,255,255,0.03)", userSelect: "none", flexShrink: 0
       }}>
         <div style={{ display: "flex", gap: 8 }}>
           {[
             { color: "#ef4444", action: () => onClose(winId), title: "Close" },
             { color: "#f59e0b", action: () => onMinimize(winId), title: "Minimize" },
-            { color: "#22c55e", action: () => setMaximized(m => !m), title: "Maximize" },
+            { color: "#22c55e", action: () => setMaximized(m => { const n = !m; onMaximizeChange?.(winId, n); return n; }), title: "Maximize" },
           ].map(b => (
             <button key={b.title} onClick={b.action} title={b.title} style={{
               width: 13, height: 13, borderRadius: "50%", background: b.color,
@@ -377,6 +470,7 @@ const WALLPAPERS = [
 
 export default function PortfolioOS() {
   const [openWindows, setOpenWindows] = useState({});
+  const [maximizedWindows, setMaximizedWindows] = useState({});
   const [minimized, setMinimized] = useState({});
   const [activeWindow, setActiveWindow] = useState(null);
   const [dockHover, setDockHover] = useState(null);
@@ -386,6 +480,9 @@ export default function PortfolioOS() {
   const [loggedOut, setLoggedOut] = useState(false);
   const [showSidebarApps, setShowSidebarApps] = useState(false);
   const [showSystemMenu, setShowSystemMenu] = useState(false);
+
+  const sidebarHidden = Object.values(maximizedWindows).some(Boolean);
+  const effectiveSidebarWidth = sidebarHidden ? 0 : SIDEBAR_WIDTH;
 
   const openWindow = (id) => {
     if (minimized[id]) {
@@ -398,6 +495,7 @@ export default function PortfolioOS() {
   const closeWindow = (id) => {
     setOpenWindows(w => { const n = { ...w }; delete n[id]; return n; });
     setMinimized(m => { const n = { ...m }; delete n[id]; return n; });
+    setMaximizedWindows(m => { const n = { ...m }; delete n[id]; return n; });
   };
 
   const minimizeWindow = (id) => {
@@ -405,12 +503,32 @@ export default function PortfolioOS() {
   };
 
   const desktopIcons = [
-    { id: "about", label: "About Me", icon: "👤", color: "linear-gradient(135deg, #0db9f2, #2563eb)" },
-    { id: "projects", label: "Projects", icon: "📁", color: "linear-gradient(135deg, #14b8a6, #059669)" },
-    { id: "career", label: "Career Journey", icon: "💼", color: "linear-gradient(135deg, #6366f1, #9333ea)" },
-    { id: "resume", label: "Resume", icon: "📄", color: "linear-gradient(135deg, #f97316, #dc2626)" },
-    { id: "contact", label: "Contact", icon: "✉️", color: "linear-gradient(135deg, #ec4899, #f43f5e)" },
-  ];
+    { id: "about", label: "About Me", icon: "👤", color: "linear-gradient(135deg, #0db9f2, #2563eb)",
+    outline: "#0db9f2" },
+    { id: "projects", label: "Projects", icon: "📁", color: "linear-gradient(135deg, #14b8a6, #059669)",
+    outline: "#14b8a6" },
+    { id: "career", label: "Career Journey", icon: "💼", color: "linear-gradient(135deg, #6366f1, #9333ea)",
+    outline: "#6366f1" },
+    { id: "resume", label: "Resume", icon: "📄", color: "linear-gradient(135deg, #f97316, #dc2626)",
+    outline: "#f97316" },
+    { id: "contact", label: "Contact", icon: "✉️", color: "linear-gradient(135deg, #ec4899, #f43f5e)",
+    outline: "#ec4899" },
+  
+    {
+      id: "spotify",
+      label: "Spotify",
+      icon: <img src={spotifyLogo} alt="Spotify" style={{ width: 26, height: 26, objectFit: "contain" }} />,
+      color: "linear-gradient(135deg, #22c55e, #16a34a)",
+    outline: "#22c55e"
+    },
+    {
+      id: "vscode",
+      label: "VS Code",
+      icon: <img src={vscodeLogo} alt="VS Code" style={{ width: 26, height: 26, objectFit: "contain" }} />,
+      color: "linear-gradient(135deg, #38bdf8, #2563eb)",
+    outline: "#0ea5e9"
+    },
+];
 
   const dockItems = [
     { id: "about", icon: "👤", label: "About Me", color: "#0db9f2" },
@@ -419,7 +537,20 @@ export default function PortfolioOS() {
     null,
     { id: "resume", icon: "📄", label: "Resume", color: "#f97316" },
     { id: "contact", icon: "✉️", label: "Contact", color: "#ec4899" },
-  ];
+  
+    {
+      id: "spotify",
+      icon: <img src={spotifyLogo} alt="Spotify" style={{ width: 22, height: 22, objectFit: "contain" }} />,
+      label: "Spotify",
+      color: "#22c55e"
+    },
+    {
+      id: "vscode",
+      icon: <img src={vscodeLogo} alt="VS Code" style={{ width: 22, height: 22, objectFit: "contain" }} />,
+      label: "VS Code",
+      color: "#0ea5e9"
+    },
+];
 
   if (loggedOut) {
     return (
@@ -477,12 +608,16 @@ export default function PortfolioOS() {
       }}>
         {/* Left Sidebar */}
         <aside style={{
-          width: 80, height: "100vh", background: "rgba(6, 14, 16, 0.65)",
+          width: sidebarHidden ? 0 : 80, height: "100vh", background: "rgba(6, 14, 16, 0.65)",
           backdropFilter: "blur(15px)", borderRight: "2px solid rgba(13,185,242,0.3)",
           boxShadow: "6px 0 30px rgba(0, 0, 0, 0.8), inset -2px 0 8px rgba(13,185,242,0.1)",
           display: "flex", flexDirection: "column", alignItems: "center",
           paddingTop: 20, paddingBottom: 40,
-          gap: 16, zIndex: 9998, justifyContent: "space-between", overflow: "hidden"
+          gap: 16, zIndex: 9998, justifyContent: "space-between", overflow: "hidden",
+          transform: sidebarHidden ? "translateX(-100%)" : "translateX(0)",
+          opacity: sidebarHidden ? 0 : 1,
+          pointerEvents: sidebarHidden ? "none" : "auto",
+          transition: "transform 0.6s ease, width 0.6s ease, opacity 0.45s ease"
         }}>
           {/* Portfolio OS Title */}
           <div style={{
@@ -505,7 +640,7 @@ export default function PortfolioOS() {
                   padding: "8px 0 6px",
                   borderRadius: 12,
                   background: "transparent",
-                  border: "none",
+                  border: `1px solid ${icon.outline}55`,
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
@@ -516,16 +651,18 @@ export default function PortfolioOS() {
                 }}
                 onMouseEnter={e => {
                   e.currentTarget.style.transform = "scale(1.04)";
+                  e.currentTarget.style.boxShadow = `0 0 0 1px ${icon.outline}55, 0 8px 20px ${icon.outline}55`;
                 }}
                 onMouseLeave={e => {
                   e.currentTarget.style.transform = "scale(1)";
+                  e.currentTarget.style.boxShadow = "none";
                 }}
               >
                 <div style={{
                   width: 52, height: 52, borderRadius: 12,
-                  background: icon.color, border: "1px solid rgba(255,255,255,0.2)",
+                  background: "transparent", border: "1px solid rgba(255,255,255,0.18)", border: "1px solid rgba(255,255,255,0.18)",
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: 22, boxShadow: "0 6px 16px rgba(0,0,0,0.4)"
+                  fontSize: 22
                 }}>
                   {icon.icon}
                 </div>
@@ -610,6 +747,8 @@ export default function PortfolioOS() {
               onClose={closeWindow}
               onMinimize={minimizeWindow}
               onFocus={setActiveWindow}
+              onMaximizeChange={(winId, isMax) => setMaximizedWindows(m => ({ ...m, [winId]: isMax }))}
+              sidebarWidth={effectiveSidebarWidth}
             />
           )
         )}
@@ -645,14 +784,14 @@ export default function PortfolioOS() {
                     onClick={() => openWindow(item.id)}
                     style={{
                       width: 48, height: 48, borderRadius: 12,
-                      background: `${item.color}18`,
-                      border: `1px solid ${item.color}30`,
+                      background: "transparent",
+                      border: `1px solid ${item.color}55`,
                       display: "flex", alignItems: "center", justifyContent: "center",
                       fontSize: 22, cursor: "pointer",
                       transform: dockHover === item.id ? "scale(1.3) translateY(-6px)" : "scale(1)",
                       transition: "transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)",
                       position: "relative",
-                      boxShadow: dockHover === item.id ? `0 12px 32px rgba(13,185,242,0.5)` : `0 4px 12px rgba(0,0,0,0.3)`
+                      boxShadow: dockHover === item.id ? `0 0 0 1px ${item.color}55, 0 12px 32px ${item.color}80` : `0 0 0 1px ${item.color}33`
                     }}
                   >
                     {item.icon}
@@ -698,26 +837,27 @@ export default function PortfolioOS() {
                     style={{
                       display: "flex", flexDirection: "column", alignItems: "center", gap: 12,
                       padding: "20px 16px", borderRadius: 16,
-                      background: "rgba(255,255,255,0.02)", border: "1px solid rgba(13,185,242,0.1)",
+                      background: "rgba(255,255,255,0.02)", border: `1px solid ${icon.outline}22`,
                       cursor: "pointer", transition: "all 0.2s", color: "white"
                     }}
                     onMouseEnter={e => {
-                      e.currentTarget.style.background = "rgba(13,185,242,0.1)";
-                      e.currentTarget.style.borderColor = "rgba(13,185,242,0.3)";
-                      e.currentTarget.style.boxShadow = "0 12px 32px rgba(13,185,242,0.3)";
+                      e.currentTarget.style.background = `${icon.outline}1a`;
+                      e.currentTarget.style.borderColor = `${icon.outline}55`;
+                      e.currentTarget.style.boxShadow = `0 12px 32px ${icon.outline}55`;
                       e.currentTarget.style.transform = "scale(1.08)";
                     }}
                     onMouseLeave={e => {
                       e.currentTarget.style.background = "rgba(255,255,255,0.02)";
-                      e.currentTarget.style.borderColor = "rgba(13,185,242,0.1)";
+                      e.currentTarget.style.borderColor = `${icon.outline}22`;
                       e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.2)";
                       e.currentTarget.style.transform = "scale(1)";
+                  e.currentTarget.style.boxShadow = "none";
                     }}
                   >
                     <div style={{
-                      width: 72, height: 72, borderRadius: 18, background: icon.color,
+                      width: 72, height: 72, borderRadius: 18, background: "transparent", border: "1px solid rgba(255,255,255,0.18)", border: "1px solid rgba(255,255,255,0.18)",
                       display: "flex", alignItems: "center", justifyContent: "center",
-                      fontSize: 36, boxShadow: "0 12px 32px rgba(0,0,0,0.4)"
+                      fontSize: 36
                     }}>
                       {icon.icon}
                     </div>
@@ -736,7 +876,7 @@ export default function PortfolioOS() {
             setShowSystemMenu(m => !m);
             setShowSidebarApps(false);
           }} style={{
-            background: "transparent", border: "none", cursor: "pointer",
+            background: "transparent", border: "1px solid rgba(255,255,255,0.18)", border: "1px solid rgba(255,255,255,0.18)", cursor: "pointer",
             color: "white", padding: "4px 8px", fontSize: 14, opacity: 0.85
           }}>⚙️</button>
           {showSystemMenu && (
@@ -753,7 +893,7 @@ export default function PortfolioOS() {
               ].map(item => (
                 <button key={item.label} onClick={item.action} style={{
                   display: "flex", alignItems: "center", gap: 10, width: "100%",
-                  background: "transparent", border: "none", color: "white",
+                  background: "transparent", border: "1px solid rgba(255,255,255,0.18)", border: "1px solid rgba(255,255,255,0.18)", color: "white",
                   padding: "9px 12px", borderRadius: 8, cursor: "pointer",
                   fontSize: 13, textAlign: "left", transition: "background 0.15s"
                 }}
