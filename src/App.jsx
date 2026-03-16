@@ -118,9 +118,9 @@ function AboutWindow() {
 
 function ProjectsWindow() {
   const projects = [
-    { name: "Heart Disease Prediction", desc: "ML model for predicting heart disease risk using patient health data and advanced algorithms.", tech: ["Python", "Scikit-Learn", "Pandas"], color: "#0db9f2", icon: "❤️", stars: 342 },
-    { name: "Eye Controlled Mouse", desc: "Computer vision application enabling mouse control through eye movements using deep learning.", tech: ["Python", "OpenCV", "TensorFlow"], color: "#14b8a6", icon: "👁️", stars: 1256 },
-    { name: "DL Clinic App", desc: "Deep learning-powered healthcare app for disease diagnosis and medical recommendations.", tech: ["React", "Python", "TensorFlow"], color: "#6366f1", icon: "🏥", stars: 728 },
+    { name: "Heart Disease Prediction", desc: "ML model for predicting heart disease risk using patient health data and advanced algorithms.", tech: ["Python", "Machine Learning", "Scikit-Learn", "Pandas", "NumPy", "Matplotlib"], color: "#0db9f2", icon: "❤️", stars: 342, url: "https://github.com/aniskarout1/Heart-Deasease-Prediction" },
+    { name: "Eye Controlled Mouse", desc: "Computer vision application enabling mouse control through eye movements using deep learning.", tech: ["Python", "Deep Learning", "OpenCv", "MediaPipe", "PyAutoGUI"], color: "#14b8a6", icon: "👁️", stars: 1256, url: "https://github.com/aniskarout1/Eye_Controlled-Mouse" },
+    { name: "DL Clinic App", desc: "A simple web application that helps patients easily book medical appointments online. it provides an admin dashboard to manage appointments efficiently.", tech: ["React", "Node.js", "MongoDB"], color: "#6366f1", icon: "🏥", stars: 728, url: "https://github.com/aniskarout1/dl-clinic2" },
   ];
   return (
     <div className="p-5 overflow-auto h-full" style={{ display: "flex", flexDirection: "column", gap: 14 }}>
@@ -132,6 +132,9 @@ function ProjectsWindow() {
           borderRadius: 10, padding: "14px 16px",
           cursor: "pointer", transition: "all 0.2s",
         }}
+          onClick={() => {
+            if (p.url) window.open(p.url, "_blank", "noopener,noreferrer");
+          }}
           onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.07)"}
           onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.04)"}
         >
@@ -281,6 +284,9 @@ function ContactWindow() {
 const WINDOW_CONTENT = { about: AboutWindow, projects: ProjectsWindow, career: CareerWindow, resume: ResumeWindow, contact: ContactWindow };
 
 let zCounter = 100;
+const SIDEBAR_WIDTH = 80;
+const MENU_BAR_HEIGHT = 28;
+const DOCK_AREA_HEIGHT = 88;
 
 function AppWindow({ winId, win, onClose, onMinimize, onFocus }) {
   const [pos, setPos] = useState({ x: 80 + Math.random() * 100, y: 60 + Math.random() * 60 });
@@ -314,11 +320,11 @@ function AppWindow({ winId, win, onClose, onMinimize, onFocus }) {
       onMouseDown={handleFocus}
       style={{
         position: "fixed",
-        left: maximized ? 0 : pos.x,
-        top: maximized ? 28 : pos.y,
-        width: maximized ? "100vw" : size.w,
-        height: maximized ? "calc(100vh - 88px)" : size.h,
-        zIndex,
+        left: maximized ? SIDEBAR_WIDTH : pos.x,
+        top: maximized ? MENU_BAR_HEIGHT : pos.y,
+        width: maximized ? `calc(100vw - ${SIDEBAR_WIDTH}px)` : size.w,
+        height: maximized ? `calc(100vh - ${MENU_BAR_HEIGHT}px)` : size.h,
+        zIndex: maximized ? 9999 : zIndex,
         borderRadius: maximized ? 0 : 14,
         overflow: "hidden",
         boxShadow: "0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.07)",
@@ -580,7 +586,7 @@ export default function PortfolioOS() {
           background: "rgba(6, 14, 16, 0.75)",
           backdropFilter: "blur(20px)",
           borderBottom: "1px solid rgba(13,185,242,0.12)",
-          fontSize: 12, color: "#cbd5e1", position: "relative", zIndex: 9999
+          fontSize: 12, color: "#cbd5e1", position: "relative", zIndex: 10001
         }}>
           <Clock />
         </header>
@@ -612,7 +618,7 @@ export default function PortfolioOS() {
         <footer style={{
           position: "fixed", bottom: 0, left: 0, right: 0,
           display: "flex", justifyContent: "center", padding: "0 0 12px",
-          zIndex: 9998
+          zIndex: 10000
         }}>
           <div style={{
             display: "flex", alignItems: "flex-end", gap: 6, padding: "8px 14px",
@@ -725,7 +731,7 @@ export default function PortfolioOS() {
           </div>
         )}
       {/* Top-right system menu */}
-        <div style={{ position: "fixed", top: 0, right: 0, zIndex: 10000 }}>
+        <div style={{ position: "fixed", top: 0, right: 0, zIndex: 10002 }}>
           <button onClick={() => {
             setShowSystemMenu(m => !m);
             setShowSidebarApps(false);
@@ -820,7 +826,15 @@ function LockScreen({ onUnlock, wallpaper }) {
     setPin(newPin);
     if (newPin.length === 4) {
       setTimeout(() => {
-        onUnlock();
+        const now = new Date();
+        const hours12 = now.getHours() % 12 || 12;
+        const expected = `${String(hours12).padStart(2, "0")}${String(now.getMinutes()).padStart(2, "0")}`;
+        if (newPin === expected) {
+          onUnlock();
+        } else {
+          setShake(true);
+          setTimeout(() => setShake(false), 300);
+        }
         setPin("");
       }, 200);
     }
@@ -848,7 +862,24 @@ function LockScreen({ onUnlock, wallpaper }) {
           boxShadow: "0 0 30px rgba(13,185,242,0.4)", marginBottom: 4
         }}>👨‍💻</div>
         {/* Time */}
-        <div style={{ fontSize: 64, fontWeight: 800, color: "white", lineHeight: 1, marginBottom: 2 }}>
+        <div
+          onClick={onUnlock}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") onUnlock();
+          }}
+          title="Click to unlock"
+          style={{
+            fontSize: 64,
+            fontWeight: 800,
+            color: "white",
+            lineHeight: 1,
+            marginBottom: 2,
+            cursor: "pointer",
+            textShadow: "0 6px 30px rgba(13,185,242,0.35)"
+          }}
+        >
           {time.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false })}
         </div>
         <div style={{ color: "rgba(255,255,255,0.7)", fontSize: 16, marginBottom: 24 }}>
