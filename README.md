@@ -72,11 +72,6 @@ Edit `src/App.jsx` and find:
 ## Deployment
 
 ```bash
-# Netlify
-netlify deploy --prod --dir=dist
-
-# Vercel
-vercel --prod
 
 # GitHub Pages (with vite.config base set)
 npm run build && gh-pages -d dist
