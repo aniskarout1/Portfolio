@@ -8,7 +8,7 @@ An interactive macOS-style developer portfolio built with **React + Vite**.
 - 🪟 Draggable windows — About Me, Projects, Career, Resume, Contact
 - 🚢 Animated dock with hover magnification & active-app indicators
 - 🖼️ Wallpaper picker with 5 built-in backgrounds
-- 🔒 Lock screen with PIN pad (enter any 4 digits to unlock)
+- 🔒 Lock screen with PIN pad (enter any 4 digits to unlock) but twist is you can only lock by exact time as pin, let now the time is 04:08 am, so pin is 0408.
 - ⏻ Logout / power-on screen
 - ⚙️ System settings dropdown menu
 
