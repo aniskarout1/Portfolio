@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import profileImage from "./assets/ar1.2.jpg";
-import abme from "../Image/logo/aboutme.png";
 import spotifyLogo from "./assets/spotify.png";
 import vscodeLogo from "./assets/vscode.png";
 // import leetcodeLogo from "../Image/leetcode.png";
@@ -523,17 +522,17 @@ function AppWindow({ winId, win, onClose, onMinimize, onFocus, onMaximizeChange,
 }
 
 const DESKTOP_WALLPAPERS = [
-  { id: "d1", name: "Desktop 1", src: "/Image/Background/bg-4.jpg" },
-  { id: "d2", name: "Desktop 2", src: "/Image/Background/bg-2.jpg" },
-  { id: "d3", name: "Desktop 3", src: "/Image/Background/bg3.jpg" },
-  { id: "d4", name: "Desktop 4", src: "/Image/Background/bg1.jpg" },
-  { id: "d5", name: "Desktop 5", src: "/Image/Background/bg-5.jpg" },
-  { id: "d6", name: "Desktop 6", src: "/Image/Background/bg-6.jpg" },
-  { id: "d7", name: "Desktop 7", src: "/Image/Background/bg-7.jpg" },
-  { id: "d8", name: "Desktop 8", src: "/Image/Background/bg-8.jpg" },
-  { id: "d9", name: "Desktop 9", src: "/Image/Background/bg-9.jpg" },
-  { id: "d10", name: "Desktop 10", src: "/Image/Background/bg-10.jpg" },
-  { id: "d11", name: "Desktop Video", src: "/Image/Background/bg-vd-1.png" },
+  { id: "d1", name: "Desktop 1", src: "Image/Background/bg-4.jpg" },
+  { id: "d2", name: "Desktop 2", src: "Image/Background/bg-2.jpg" },
+  { id: "d3", name: "Desktop 3", src: "Image/Background/bg3.jpg" },
+  { id: "d4", name: "Desktop 4", src: "Image/Background/bg1.jpg" },
+  { id: "d5", name: "Desktop 5", src: "Image/Background/bg-5.jpg" },
+  { id: "d6", name: "Desktop 6", src: "Image/Background/bg-6.jpg" },
+  { id: "d7", name: "Desktop 7", src: "Image/Background/bg-7.jpg" },
+  { id: "d8", name: "Desktop 8", src: "Image/Background/bg-8.jpg" },
+  { id: "d9", name: "Desktop 9", src: "Image/Background/bg-9.jpg" },
+  { id: "d10", name: "Desktop 10", src: "Image/Background/bg-10.jpg" },
+  { id: "d11", name: "Desktop Video", src: "Image/Background/bg-vd-1.png" },
 ];
 
 const MOBILE_WALLPAPERS = [
@@ -596,36 +595,36 @@ export default function PortfolioOS() {
 
   const desktopIcons = [
     {
-      id: "about", label: "About Me", iconUrl: "/Image/logo/aboutme.png", color: "linear-gradient(135deg, #0db9f2, #2563eb)",
+      id: "about", label: "About Me", iconUrl: "Image/logo/aboutme.png", color: "linear-gradient(135deg, #0db9f2, #2563eb)",
       outline: "#0db9f2"
     },
     {
-      id: "projects", label: "Projects", iconUrl: "/Image/logo/project.jpg", color: "linear-gradient(135deg, #14b8a6, #059669)",
+      id: "projects", label: "Projects", iconUrl: "Image/logo/project.jpg", color: "linear-gradient(135deg, #14b8a6, #059669)",
       outline: "#14b8a6"
     },
     {
-      id: "career", label: "Career Journey", iconUrl: "/Image/logo/career.png", color: "linear-gradient(135deg, #6366f1, #9333ea)",
+      id: "career", label: "Career Journey", iconUrl: "Image/logo/career.png", color: "linear-gradient(135deg, #6366f1, #9333ea)",
       outline: "#6366f1"
     },
     {
-      id: "resume", label: "Resume", iconUrl: "/Image/logo/resume.png", color: "linear-gradient(135deg, #f97316, #dc2626)",
+      id: "resume", label: "Resume", iconUrl: "Image/logo/resume.png", color: "linear-gradient(135deg, #f97316, #dc2626)",
       outline: "#f97316"
     },
     {
-      id: "contact", label: "Contact", iconUrl: "/Image/logo/contact.jfif", color: "linear-gradient(135deg, #ec4899, #f43f5e)",
+      id: "contact", label: "Contact", iconUrl: "Image/logo/contact.jfif", color: "linear-gradient(135deg, #ec4899, #f43f5e)",
       outline: "#ec4899"
     },
     {
       id: "spotify",
       label: "Spotify",
-      iconUrl: "/Image/logo/Spotify.png",
+      iconUrl: "Image/logo/Spotify.png",
       color: "linear-gradient(135deg, #22c55e, #16a34a)",
       outline: "#22c55e"
     },
     {
       id: "vscode",
       label: "VS Code",
-      iconUrl: "/Image/logo/visual-studio-code-logo-rounded-free-png.png",
+      iconUrl: "Image/logo/visual-studio-code-logo-rounded-free-png.png",
       color: "linear-gradient(135deg, #38bdf8, #2563eb)",
       outline: "#0ea5e9"
     },
@@ -635,46 +634,46 @@ export default function PortfolioOS() {
     {
       id: "leetcode",
       label: "LeetCode",
-      iconUrl: "/Image/logo/leetcode.png",
+      iconUrl: "Image/logo/leetcode.png",
       outline: "#f97316",
     },
     {
       id: "github",
       label: "GitHub",
-      iconUrl: "/Image/logo/github.png",
+      iconUrl: "Image/logo/github.png",
       outline: "#94a3b8",
     },
   ];
 
   const dockItems = [
-    { id: "about", icon: <img src="/Image/logo/aboutme.png" alt="About Me" style={{ width: 22, height: 22, objectFit: "contain" }} />, label: "About Me", color: "#0db9f2" },
-    { id: "projects", icon: <img src="/Image/logo/project.jpg" alt="Projects" style={{ width: 22, height: 22, objectFit: "contain" }} />, label: "Projects", color: "#14b8a6" },
-    { id: "career", icon: <img src="/Image/logo/career.png" alt="Career" style={{ width: 22, height: 22, objectFit: "contain" }} />, label: "Career", color: "#6366f1" },
+    { id: "about", icon: <img src="Image/logo/aboutme.png" alt="About Me" style={{ width: 22, height: 22, objectFit: "contain" }} />, label: "About Me", color: "#0db9f2" },
+    { id: "projects", icon: <img src="Image/logo/project.jpg" alt="Projects" style={{ width: 22, height: 22, objectFit: "contain" }} />, label: "Projects", color: "#14b8a6" },
+    { id: "career", icon: <img src="Image/logo/career.png" alt="Career" style={{ width: 22, height: 22, objectFit: "contain" }} />, label: "Career", color: "#6366f1" },
     null,
-    { id: "resume", icon: <img src="/Image/logo/resume.png" alt="Resume" style={{ width: 22, height: 22, objectFit: "contain" }} />, label: "Resume", color: "#f97316" },
-    { id: "contact", icon: <img src="/Image/logo/contact.jfif" alt="Contact" style={{ width: 22, height: 22, objectFit: "contain" }} />, label: "Contact", color: "#ec4899" },
+    { id: "resume", icon: <img src="Image/logo/resume.png" alt="Resume" style={{ width: 22, height: 22, objectFit: "contain" }} />, label: "Resume", color: "#f97316" },
+    { id: "contact", icon: <img src="Image/logo/contact.jfif" alt="Contact" style={{ width: 22, height: 22, objectFit: "contain" }} />, label: "Contact", color: "#ec4899" },
 
     {
       id: "spotify",
-      icon: <img src="/Image/logo/Spotify.png" alt="Spotify" style={{ width: 22, height: 22, objectFit: "contain" }} />,
+      icon: <img src="Image/logo/Spotify.png" alt="Spotify" style={{ width: 22, height: 22, objectFit: "contain" }} />,
       label: "Spotify",
       color: "#22c55e"
     },
     {
       id: "vscode",
-      icon: <img src="/Image/logo/visual-studio-code-logo-rounded-free-png.png" alt="VS Code" style={{ width: 22, height: 22, objectFit: "contain" }} />,
+      icon: <img src="Image/logo/visual-studio-code-logo-rounded-free-png.png" alt="VS Code" style={{ width: 22, height: 22, objectFit: "contain" }} />,
       label: "VS Code",
       color: "#0ea5e9"
     },
     {
       id: "leetcode",
-      icon: <img src="/Image/logo/leetcode.png" alt="LeetCode" style={{ width: 22, height: 22, objectFit: "contain" }} />,
+      icon: <img src="Image/logo/leetcode.png" alt="LeetCode" style={{ width: 22, height: 22, objectFit: "contain" }} />,
       label: "LeetCode",
       color: "#f97316"
     },
     {
       id: "github",
-      icon: <img src="/Image/logo/github.png" alt="GitHub" style={{ width: 22, height: 22, objectFit: "contain" }} />,
+      icon: <img src="Image/logo/github.png" alt="GitHub" style={{ width: 22, height: 22, objectFit: "contain" }} />,
       label: "GitHub",
       color: "#94a3b8"
     },
