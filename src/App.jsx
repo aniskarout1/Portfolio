@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import profileImage from "./assets/ar1.2.jpg";
-import abme from "../Image/aboutme.png";
+import abme from "../Image/logo/aboutme.png";
 import spotifyLogo from "./assets/spotify.png";
 import vscodeLogo from "./assets/vscode.png";
 // import leetcodeLogo from "../Image/leetcode.png";
@@ -557,6 +557,20 @@ export default function PortfolioOS() {
   const [loggedOut, setLoggedOut] = useState(false);
   const [showSidebarApps, setShowSidebarApps] = useState(false);
   const [showSystemMenu, setShowSystemMenu] = useState(false);
+  const [contextMenu, setContextMenu] = useState({ show: false, x: 0, y: 0 });
+
+  const toggleFullScreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch((err) => {
+        console.error(`Error attempting to enable fullscreen: ${err.message}`);
+      });
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+    setContextMenu({ show: false, x: 0, y: 0 });
+  };
 
   const openWindow = (id) => {
     if (id === "github") {
@@ -719,7 +733,15 @@ export default function PortfolioOS() {
         fontFamily: "'Syne', sans-serif", position: "relative",
         userSelect: "none",
         display: "flex"
-      }}>
+      }}
+      onContextMenu={(e) => {
+        e.preventDefault();
+        setContextMenu({ show: true, x: e.clientX, y: e.clientY });
+      }}
+      onClick={() => {
+        if (contextMenu.show) setContextMenu({ show: false, x: 0, y: 0 });
+      }}
+      >
 
 
         {/* Main Content */}
@@ -1132,6 +1154,36 @@ export default function PortfolioOS() {
                   ))}
                 </div>
               </div>
+            </div>
+          )}
+
+          {/* Right Click Context Menu */}
+          {contextMenu.show && (
+            <div style={{
+              position: "absolute",
+              top: contextMenu.y,
+              left: contextMenu.x,
+              background: "rgba(10,20,24,0.95)",
+              backdropFilter: "blur(20px)",
+              border: "1px solid rgba(13,185,242,0.2)",
+              borderRadius: 8,
+              padding: 6,
+              minWidth: 200,
+              boxShadow: "0 8px 40px rgba(0,0,0,0.7)",
+              zIndex: 1000000
+            }} onClick={(e) => e.stopPropagation()}>
+              <button onClick={toggleFullScreen} style={{
+                display: "flex", alignItems: "center", gap: 10, width: "100%",
+                background: "transparent", border: "none", color: "white",
+                padding: "9px 12px", borderRadius: 6, cursor: "pointer",
+                fontSize: 13, textAlign: "left", transition: "background 0.15s"
+              }}
+                onMouseEnter={e => e.currentTarget.style.background = "rgba(13,185,242,0.12)"}
+                onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+              >
+                <span style={{ fontSize: 16 }}>{document.fullscreenElement ? "↙️" : "🔲"}</span>
+                <span style={{ fontWeight: 500 }}>{document.fullscreenElement ? "Exit Full Screen" : "Enter Full Screen"}</span>
+              </button>
             </div>
           )}
         </div>
