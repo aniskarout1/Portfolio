@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import profileImage from "./assets/ar1.2.jpg";
 import spotifyLogo from "./assets/spotify.png";
 import vscodeLogo from "./assets/vscode.png";
+import leetcodeLogo from "../Image/leetcode.png";
+import githubLogo from "../Image/github.png";
 
 const WINDOWS = {
   about: {
@@ -52,6 +54,20 @@ const WINDOWS = {
     icon: "VS",
     color: "from-sky-500 to-blue-600",
     accent: "#0ea5e9",
+  },
+  leetcode: {
+    id: "leetcode",
+    title: "LeetCode",
+    icon: "LC",
+    color: "from-amber-500 to-orange-600",
+    accent: "#f97316",
+  },
+  github: {
+    id: "github",
+    title: "GitHub",
+    icon: "GH",
+    color: "from-slate-500 to-zinc-600",
+    accent: "#94a3b8",
   },
 
 };
@@ -366,6 +382,43 @@ function VSCodeWindow() {
   );
 }
 
+function LeetCodeWindow() {
+  return (
+    <div style={{ width: "100%", height: "100%", background: "#0b0b0b", position: "relative" }}>
+      <iframe
+        title="LeetCode"
+        src="https://leetcard.jacoblin.cool/ANISKA_ROUT?theme=dark&ext=heatmap"
+        style={{ width: "100%", height: "100%", border: "none" }}
+        loading="lazy"
+      />
+      <button
+        onClick={() => window.open("https://leetcode.com/u/ANISKA_ROUT/", "_blank", "noopener,noreferrer")}
+        style={{
+          position: "absolute", top: 12, right: 12,
+          background: "rgba(255,255,255,0.12)", color: "white",
+          border: "1px solid rgba(255,255,255,0.25)", borderRadius: 8,
+          padding: "6px 10px", fontSize: 12, cursor: "pointer"
+        }}
+      >
+        Open Profile
+      </button>
+    </div>
+  );
+}
+
+function GitHubWindow() {
+  return (
+    <div style={{ width: "100%", height: "100%", background: "#0b0b0b", position: "relative" }}>
+      <iframe
+        title="GitHub"
+        src="https://github1s.com/aniskarout1"
+        style={{ width: "100%", height: "100%", border: "none" }}
+        loading="lazy"
+      />
+    </div>
+  );
+}
+
 const WINDOW_CONTENT = {
   about: AboutWindow,
   projects: ProjectsWindow,
@@ -374,6 +427,8 @@ const WINDOW_CONTENT = {
   contact: ContactWindow,
   spotify: SpotifyWindow,
   vscode: VSCodeWindow,
+  leetcode: LeetCodeWindow,
+  github: GitHubWindow,
 };
 
 let zCounter = 100;
@@ -492,6 +547,14 @@ export default function PortfolioOS() {
     setActiveWindow(id);
   };
 
+  const launchApp = (id) => {
+    if (id === "github") {
+      window.open("https://github.com/aniskarout1", "_blank", "noopener,noreferrer");
+      return;
+    }
+    openWindow(id);
+  };
+
   const closeWindow = (id) => {
     setOpenWindows(w => { const n = { ...w }; delete n[id]; return n; });
     setMinimized(m => { const n = { ...m }; delete n[id]; return n; });
@@ -530,6 +593,37 @@ export default function PortfolioOS() {
     },
 ];
 
+  const launchpadIcons = [
+    ...desktopIcons,
+    {
+      id: "leetcode",
+      label: "LeetCode",
+      icon: <img src={leetcodeLogo} alt="LeetCode" style={{ width: 30, height: 30, objectFit: "contain" }} />,
+      outline: "#f97316"
+    },
+    {
+      id: "github",
+      label: "GitHub",
+      icon: <img src={githubLogo} alt="GitHub" style={{ width: 30, height: 30, objectFit: "contain" }} />,
+      outline: "#94a3b8"
+    },
+  ];
+
+  const rightSideApps = [
+    {
+      id: "leetcode",
+      label: "LeetCode",
+      iconUrl: leetcodeLogo,
+      outline: "#f97316",
+    },
+    {
+      id: "github",
+      label: "GitHub",
+      iconUrl: githubLogo,
+      outline: "#94a3b8",
+    },
+  ];
+
   const dockItems = [
     { id: "about", icon: "👤", label: "About Me", color: "#0db9f2" },
     { id: "projects", icon: "📁", label: "Projects", color: "#14b8a6" },
@@ -549,6 +643,18 @@ export default function PortfolioOS() {
       icon: <img src={vscodeLogo} alt="VS Code" style={{ width: 22, height: 22, objectFit: "contain" }} />,
       label: "VS Code",
       color: "#0ea5e9"
+    },
+    {
+      id: "leetcode",
+      icon: <img src={leetcodeLogo} alt="LeetCode" style={{ width: 22, height: 22, objectFit: "contain" }} />,
+      label: "LeetCode",
+      color: "#f97316"
+    },
+    {
+      id: "github",
+      icon: <img src={githubLogo} alt="GitHub" style={{ width: 22, height: 22, objectFit: "contain" }} />,
+      label: "GitHub",
+      color: "#94a3b8"
     },
 ];
 
@@ -640,7 +746,7 @@ export default function PortfolioOS() {
                   padding: "8px 0 6px",
                   borderRadius: 12,
                   background: "transparent",
-                  border: `1px solid ${icon.outline}55`,
+                  border: "none",
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
@@ -702,12 +808,14 @@ export default function PortfolioOS() {
           }}
           title="Launchpad"
           >
-            {[...Array(6)].map((_, i) => (
-              <div key={i} style={{
-                width: 7, height: 7, borderRadius: "50%",
-                background: "#0db9f2", boxShadow: "0 0 10px rgba(13,185,242,1)"
-              }} />
-            ))}
+            <div style={{ display: "contents", pointerEvents: "none" }}>
+              {[...Array(6)].map((_, i) => (
+                <div key={i} style={{
+                  width: 7, height: 7, borderRadius: "50%",
+                  background: "#0db9f2", boxShadow: "0 0 10px rgba(13,185,242,1)"
+                }} />
+              ))}
+            </div>
           </button>
         </aside>
 
@@ -729,6 +837,76 @@ export default function PortfolioOS() {
         </header>
 
         <main style={{ position: "relative", flex: 1, padding: 24 }} />
+
+        {/* Right-side Apps (not in left sidebar) */}
+        <div style={{
+          position: "fixed",
+          top: 64,
+          right: 16,
+          display: "flex",
+          flexDirection: "column",
+          gap: 12,
+          zIndex: 9997
+        }}>
+          <div style={{
+            color: "#94a3b8",
+            fontSize: 11,
+            letterSpacing: 1,
+            textTransform: "uppercase",
+            fontWeight: 700,
+            textAlign: "center"
+          }}>
+            Apps
+          </div>
+            {rightSideApps.map(app => (
+              <button key={app.id}
+              onClick={() => launchApp(app.id)}
+              title={app.label}
+              style={{
+                width: 84,
+                padding: "10px 0 8px",
+                borderRadius: 12,
+                background: "rgba(6, 14, 16, 0.65)",
+                border: `1px solid ${app.outline}55`,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 8,
+                cursor: "pointer",
+                transition: "all 0.2s",
+                color: "white",
+                backdropFilter: "blur(10px)",
+                boxShadow: "0 8px 24px rgba(0,0,0,0.45)"
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.transform = "translateY(-2px)";
+                e.currentTarget.style.boxShadow = `0 0 0 1px ${app.outline}55, 0 10px 26px rgba(0,0,0,0.55)`;
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.45)";
+              }}
+            >
+              <div style={{
+                width: 48, height: 48, borderRadius: 12,
+                background: "rgba(255,255,255,0.06)",
+                border: "1px solid rgba(255,255,255,0.18)",
+                display: "flex", alignItems: "center", justifyContent: "center"
+              }}>
+                <img src={app.iconUrl} alt={app.label} style={{ width: 26, height: 26, objectFit: "contain" }} />
+              </div>
+              <span style={{
+                fontSize: 10,
+                fontWeight: 600,
+                textAlign: "center",
+                lineHeight: 1.1,
+                color: "#cbd5e1"
+              }}>
+                {app.label}
+              </span>
+            </button>
+          ))}
+        </div>
 
         {/* Hint */}
         <div style={{
@@ -781,7 +959,7 @@ export default function PortfolioOS() {
                     opacity: dockHover === item.id ? 1 : 0, transition: "opacity 0.15s", pointerEvents: "none"
                   }}>{item.label}</div>
                   <button
-                    onClick={() => openWindow(item.id)}
+                    onClick={() => launchApp(item.id)}
                     style={{
                       width: 48, height: 48, borderRadius: 12,
                       background: "transparent",
@@ -828,10 +1006,10 @@ export default function PortfolioOS() {
                 display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 32,
                 maxWidth: 700
               }}>
-                {desktopIcons.map(icon => (
+                {launchpadIcons.map(icon => (
                   <button key={icon.id}
                     onClick={() => {
-                      openWindow(icon.id);
+                      launchApp(icon.id);
                       setShowSidebarApps(false);
                     }}
                     style={{
