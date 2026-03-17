@@ -737,7 +737,7 @@ export default function PortfolioOS() {
       id: "chrome",
       label: "Chrome",
       iconUrl: "Image/logo/chrome.png",
-      outline: "#4285f4",
+      outline: "#ff7350ff",
     },
     {
       id: "leetcode",
@@ -797,6 +797,18 @@ export default function PortfolioOS() {
       label: "GitHub",
       color: "#94a3b8"
     },
+    {
+      id: "youtube",
+      icon: <img src="Image/logo/youtube.png" alt="YouTube" style={{ width: 22, height: 22, objectFit: "contain" }} />,
+      label: "YouTube",
+      color: "#ff0000"
+    },
+    {
+      id: "chrome",
+      icon: <img src="Image/logo/chrome.png" alt="Chrome" style={{ width: 22, height: 22, objectFit: "contain" }} />,
+      label: "Chrome",
+      color: "#4285f4"
+    },
   ];
 
   if (loggedOut) {
@@ -853,13 +865,13 @@ export default function PortfolioOS() {
         userSelect: "none",
         display: "flex"
       }}
-      onContextMenu={(e) => {
-        e.preventDefault();
-        setContextMenu({ show: true, x: e.clientX, y: e.clientY });
-      }}
-      onClick={() => {
-        if (contextMenu.show) setContextMenu({ show: false, x: 0, y: 0 });
-      }}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          setContextMenu({ show: true, x: e.clientX, y: e.clientY });
+        }}
+        onClick={() => {
+          if (contextMenu.show) setContextMenu({ show: false, x: 0, y: 0 });
+        }}
       >
 
 
