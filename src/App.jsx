@@ -69,6 +69,20 @@ const WINDOWS = {
     color: "from-slate-500 to-zinc-600",
     accent: "#94a3b8",
   },
+  youtube: {
+    id: "youtube",
+    title: "YouTube",
+    icon: "YT",
+    color: "from-red-500 to-rose-600",
+    accent: "#ff0000",
+  },
+  chrome: {
+    id: "chrome",
+    title: "Chrome",
+    icon: "CH",
+    color: "from-blue-400 to-blue-600",
+    accent: "#4285f4",
+  },
 
 };
 
@@ -419,6 +433,100 @@ function GitHubWindow() {
   );
 }
 
+function YouTubeWindow() {
+  return (
+    <div style={{ width: "100%", height: "100%", background: "#000", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <iframe
+        width="100%"
+        height="100%"
+        src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+        title="YouTube Video"
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      ></iframe>
+    </div>
+  );
+}
+
+function ChromeWindow() {
+  const homeUrl = 'https://www.google.com/webhp?igu=1';
+  const [url, setUrl] = useState(localStorage.getItem("chrome-url") || homeUrl);
+  const [displayUrl, setDisplayUrl] = useState(localStorage.getItem("chrome-display-url") || "https://www.google.com");
+  const iframeRef = useRef(null);
+
+  const refreshChrome = () => {
+    if (iframeRef.current) iframeRef.current.src = url;
+  };
+
+  const goToHome = () => {
+    const targetUrl = homeUrl;
+    const targetDisplay = "https://www.google.com";
+    setUrl(targetUrl);
+    setDisplayUrl(targetDisplay);
+    localStorage.setItem("chrome-url", targetUrl);
+    localStorage.setItem("chrome-display-url", targetDisplay);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      let inputUrl = e.target.value.trim();
+      if (inputUrl.length === 0) return;
+
+      if (!inputUrl.startsWith("http://") && !inputUrl.startsWith("https://")) {
+        inputUrl = "https://" + inputUrl;
+      }
+
+      let finalUrl = encodeURI(inputUrl);
+      let finalDisplay = finalUrl;
+
+      if (finalUrl.includes("google.com")) {
+        finalUrl = homeUrl;
+        finalDisplay = "https://www.google.com";
+      }
+
+      setUrl(finalUrl);
+      setDisplayUrl(finalDisplay);
+      localStorage.setItem("chrome-url", finalUrl);
+      localStorage.setItem("chrome-display-url", finalDisplay);
+      e.target.blur();
+    }
+  };
+
+  return (
+    <div style={{ height: "100%", width: "100%", display: "flex", flexDirection: "column", background: "#202124" }}>
+      <div style={{ width: "100%", padding: "4px 8px", display: "flex", alignItems: "center", gap: 8, borderBottom: "1px solid #3c4043", background: "#35363a" }}>
+        <button onClick={refreshChrome} style={{ background: "transparent", border: "none", cursor: "pointer", color: "white", fontSize: 16 }}>↻</button>
+        <button onClick={goToHome} style={{ background: "transparent", border: "none", cursor: "pointer", color: "white", fontSize: 16 }}>⌂</button>
+        <input
+          type="url"
+          value={displayUrl}
+          onChange={(e) => setDisplayUrl(e.target.value)}
+          onKeyDown={handleKeyDown}
+          spellCheck={false}
+          autoComplete="off"
+          style={{
+            flex: 1,
+            background: "#202124",
+            border: "none",
+            borderRadius: 14,
+            padding: "4px 12px",
+            color: "#e8eaed",
+            fontSize: 12,
+            outline: "none"
+          }}
+        />
+      </div>
+      <iframe
+        ref={iframeRef}
+        src={url}
+        style={{ flex: 1, border: "none", background: "white" }}
+        title="Chrome Browser"
+      ></iframe>
+    </div>
+  );
+}
+
 const WINDOW_CONTENT = {
   about: AboutWindow,
   projects: ProjectsWindow,
@@ -429,6 +537,8 @@ const WINDOW_CONTENT = {
   vscode: VSCodeWindow,
   leetcode: LeetCodeWindow,
   github: GitHubWindow,
+  youtube: YouTubeWindow,
+  chrome: ChromeWindow,
 };
 
 let zCounter = 10000;
@@ -614,23 +724,21 @@ export default function PortfolioOS() {
       id: "contact", label: "Contact", iconUrl: "Image/logo/contact.jfif", color: "linear-gradient(135deg, #ec4899, #f43f5e)",
       outline: "#ec4899"
     },
-    {
-      id: "spotify",
-      label: "Spotify",
-      iconUrl: "Image/logo/Spotify.png",
-      color: "linear-gradient(135deg, #22c55e, #16a34a)",
-      outline: "#22c55e"
-    },
-    {
-      id: "vscode",
-      label: "VS Code",
-      iconUrl: "Image/logo/visual-studio-code-logo-rounded-free-png.png",
-      color: "linear-gradient(135deg, #38bdf8, #2563eb)",
-      outline: "#0ea5e9"
-    },
   ];
 
   const rightSideApps = [
+    {
+      id: "youtube",
+      label: "YouTube",
+      iconUrl: "Image/logo/youtube.png",
+      outline: "#ff0000",
+    },
+    {
+      id: "chrome",
+      label: "Chrome",
+      iconUrl: "Image/logo/chrome.png",
+      outline: "#4285f4",
+    },
     {
       id: "leetcode",
       label: "LeetCode",
@@ -642,6 +750,18 @@ export default function PortfolioOS() {
       label: "GitHub",
       iconUrl: "Image/logo/github.png",
       outline: "#94a3b8",
+    },
+    {
+      id: "vscode",
+      label: "VS Code",
+      iconUrl: "Image/logo/visual-studio-code-logo-rounded-free-png.png",
+      outline: "#0ea5e9",
+    },
+    {
+      id: "spotify",
+      label: "Spotify",
+      iconUrl: "Image/logo/Spotify.png",
+      outline: "#22c55e",
     },
   ];
 
@@ -809,7 +929,7 @@ export default function PortfolioOS() {
             {/* Desktop Icons - Left Home Page */}
             <div style={{
               display: "grid",
-              gridTemplateColumns: "repeat(2, 84px)",
+              gridTemplateColumns: "repeat(1, 84px)",
               gap: 12,
               position: "absolute",
               top: 16,
