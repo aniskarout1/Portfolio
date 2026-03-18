@@ -730,13 +730,13 @@ export default function PortfolioOS() {
     {
       id: "youtube",
       label: "YouTube",
-      iconUrl: "Image/logo/youtube.png",
+      iconUrl: "Image/logo/yt1.jfif",
       outline: "#ff0000",
     },
     {
       id: "chrome",
       label: "Chrome",
-      iconUrl: "Image/logo/chrome.png",
+      iconUrl: "Image/logo/ch1.jfif",
       outline: "#ff7350ff",
     },
     {
@@ -799,13 +799,13 @@ export default function PortfolioOS() {
     },
     {
       id: "youtube",
-      icon: <img src="Image/logo/youtube.png" alt="YouTube" style={{ width: 22, height: 22, objectFit: "contain" }} />,
+      icon: <img src="Image/logo/yt1.jfif" alt="YouTube" style={{ width: 22, height: 22, objectFit: "contain" }} />,
       label: "YouTube",
       color: "#ff0000"
     },
     {
       id: "chrome",
-      icon: <img src="Image/logo/chrome.png" alt="Chrome" style={{ width: 22, height: 22, objectFit: "contain" }} />,
+      icon: <img src="Image/logo/ch1.jfif" alt="Chrome" style={{ width: 22, height: 22, objectFit: "contain" }} />,
       label: "Chrome",
       color: "#4285f4"
     },
